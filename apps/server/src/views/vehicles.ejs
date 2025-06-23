@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vehicles List</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f4f4f4; }
+    img { max-width: 100px; }
+    .create-btn { margin-bottom: 16px; display: inline-block; padding: 8px 16px; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+    .create-btn:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>Vehicles</h1>
+  <a href="/ui/vehicles/create" class="create-btn">Create Vehicle</a>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Model</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Image</th>
+        <th>Description</th>
+        <th>Brand</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% vehicles.forEach(function(vehicle) { %>
+        <tr>
+          <td><%= vehicle.id %></td>
+          <td><%= vehicle.model %></td>
+          <td><%= vehicle.vehicleName %></td>
+          <td><%= vehicle.price %></td>
+          <td><img src="<%= vehicle.image %>" alt="<%= vehicle.model %>" /></td>
+          <td><%= vehicle.desc %></td>
+          <td><%= vehicle.brand %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html> 

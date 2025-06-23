@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Vehicle</title>
+  <style>
+    form { max-width: 400px; margin: 0 auto; }
+    label { display: block; margin-top: 12px; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 4px; }
+    button { margin-top: 16px; padding: 8px 16px; background: #007bff; color: #fff; border: none; border-radius: 4px; }
+    button:hover { background: #0056b3; }
+    .back-link { display: inline-block; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Create Vehicle</h1>
+  <form action="/ui/vehicles/create" method="POST">
+    <label for="model">Model</label>
+    <input type="text" id="model" name="model" required />
+
+    <label for="vehicleName">Name</label>
+    <input type="text" id="vehicleName" name="vehicleName" required />
+
+    <label for="price">Price</label>
+    <input type="number" id="price" name="price" required />
+
+    <label for="image">Image URL</label>
+    <input type="text" id="image" name="image" required />
+
+    <label for="desc">Description</label>
+    <textarea id="desc" name="desc" required></textarea>
+
+    <label for="brand">Brand</label>
+    <input type="text" id="brand" name="brand" required />
+
+    <button type="submit">Create</button>
+  </form>
+  <a href="/ui/vehicles" class="back-link">&larr; Back to Vehicles</a>
+</body>
+</html> 
