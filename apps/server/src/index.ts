@@ -1,7 +1,7 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
-import type { RequestHandler } from "express";
+import type { RequestHandler, Request, Response, NextFunction } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -44,6 +44,17 @@ app.get("/", (_req, res) => {
   res.status(200).send("OK");
 });
 
+// Simple authentication middleware
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  // You can use a better auth system, but for demo, use a static token
+  const token = req.headers["x-auth-token"];
+  if (token === "secret123") {
+    next();
+  } else {
+    res.status(401).send("Unauthorized");
+  }
+};
+
 // Create a new vehicle
 const createVehicle: RequestHandler = (req, res) => {
   const { model, vehicleName, price, image, desc, brand } = req.body;
@@ -55,7 +66,7 @@ const createVehicle: RequestHandler = (req, res) => {
   vehicles.push(vehicle);
   res.status(201).json(vehicle);
 };
-app.post("/vehicles", createVehicle);
+app.post("/vehicles", authMiddleware, createVehicle);
 
 // Get all vehicles
 const getAllVehicles: RequestHandler = (_req, res) => {
@@ -96,7 +107,7 @@ const updateVehicle: RequestHandler = (req, res) => {
   vehicle.brand = brand;
   res.json(vehicle);
 };
-app.put("/vehicles/:id", updateVehicle);
+app.put("/vehicles/:id", authMiddleware, updateVehicle);
 
 // Delete a vehicle by id
 const deleteVehicle: RequestHandler = (req, res) => {
@@ -109,7 +120,7 @@ const deleteVehicle: RequestHandler = (req, res) => {
   vehicles.splice(index, 1);
   res.status(204).send();
 };
-app.delete("/vehicles/:id", deleteVehicle);
+app.delete("/vehicles/:id", authMiddleware, deleteVehicle);
 
 // UI route to render vehicles
 app.get("/ui/vehicles", (_req, res) => {
@@ -117,12 +128,12 @@ app.get("/ui/vehicles", (_req, res) => {
 });
 
 // UI route to render create vehicle form
-app.get("/ui/vehicles/create", (_req, res) => {
+app.get("/ui/vehicles/create", authMiddleware, (_req, res) => {
   res.render("create-vehicle");
 });
 
 // UI route to handle create vehicle form submission
-app.post("/ui/vehicles/create", (req, res) => {
+app.post("/ui/vehicles/create", authMiddleware, (req, res) => {
   const { model, vehicleName, price, image, desc, brand } = req.body;
   if (!model || !vehicleName || !price || !image || !desc || !brand) {
     res.status(400).send("All fields are required.");
